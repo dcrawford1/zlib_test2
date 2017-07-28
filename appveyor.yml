@@ -20,13 +20,18 @@ configuration: Release
 
 before_build:
   - echo Prepare vcpkg...
-  - ps: $VCPKG = "vcpkg-6"; if(!(Test-Path -Path $VCPKG )){ Invoke-WebRequest "http://intelight.s3.amazonaws.com/vcpkg/$VCPKG.zip" -OutFile $VCPKG".zip"; ls; Expand-Archive -Path ${VCPKG}".zip"; ls }
+  - ps: $VCPKG = "vcpkg-6"
+  - ps: if(!(Test-Path -Path $VCPKG )){ Invoke-WebRequest "http://intelight.s3.amazonaws.com/vcpkg/$VCPKG.zip" -OutFile $VCPKG".zip"; ls; Expand-Archive -Path ${VCPKG}".zip"; ls }
  
 build_script:
-   - ps: $VCPKG = "vcpkg-6"
-   - ps: $wd = $pwd.path -replace "\\", "/"
-   - ps: echo $wd; mkdir build
-   - ps: cd build;
-   - ps: cmake -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE="$wd/$VCPKG/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x86-windows-mixed ..
-   - ps: cmake --build . --config Release
+  - ps: $VCPKG = "vcpkg-6"
+  - ps: $wd = $pwd.path -replace "\\", "/"
+  - ps: mkdir build
+  - ps: cd build
+  - ps: cmake -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE="$wd/$VCPKG/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x86-windows-mixed ..
+  - ps: cmake --build . --config Release
+   
+test: off
 
+artifacts:
+  - path: build\$(configuration)\minigzip.exe
