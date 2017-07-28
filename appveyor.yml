@@ -24,7 +24,6 @@ before_build:
   - echo Running cmake...
   - ps: $VCPKG = "vcpkg-6"; $wd = $pwd.path -replace "\\", "/"; echo $wd; mkdir build; cd build; cmake -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE="$wd/$VCPKG/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x86-windows-mixed ..
 
-build:
-  parallel: true
-  project: build\sample.sln
+build_script:
+   - ps: cmake --build build --config Release
 
