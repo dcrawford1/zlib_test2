@@ -24,10 +24,10 @@ configuration: Release
 before_build:
   - echo Prepare vcpkg...
   - ps: $VCPKG = "vcpkg-6"; if(!(Test-Path -Path $VCPKG )){ Invoke-WebRequest "http://intelight.s3.amazonaws.com/vcpkg/$VCPKG.zip" -OutFile $VCPKG".zip"; ls; Expand-Archive -Path ${VCPKG}".zip"; ls }
-  - echo Running cmake...
-  - echo "project %P%"
-  - ps: $VCPKG = "vcpkg-6"; $wd = $pwd.path -replace "\\", "/"; echo $wd; mkdir build; cd build; cmake -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE="$wd/$VCPKG/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x86-windows-mixed ..
-
+  
 build:
   parallel: true
-  project: build\maxconnect.sln
+  project: build\sample.sln
+  
+after_build:
+  - ps: ls build
