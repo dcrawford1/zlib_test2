@@ -8,6 +8,9 @@ max_jobs: 1
 
 image: Visual Studio 2017
 
+environment:
+  VCPKG: vcpkg-6
+
 init:
   - git config --global core.autocrlf input
 
@@ -23,23 +26,9 @@ configuration: Release
 
 before_build:
   - echo Prepare vcpkg...
-  - ps: >-
-    $VCPKG = "vcpkg-6"
-    if(!(Test-Path -Path $VCPKG )){
-      Invoke-WebRequest "http://intelight.s3.amazonaws.com/vcpkg/$VCPKG.zip" -OutFile $VCPKG.zip
-      Expand-Archive $VCPKG.zip
-      ls
-    } 
+  - ps: if(!(Test-Path -Path $VCPKG )){ Invoke-WebRequest "http://intelight.s3.amazonaws.com/vcpkg/$VCPKG.zip" -OutFile $VCPKG.zip; Expand-Archive $VCPKG.zip; ls }
   - echo Running cmake...
-  - ps: >-
-    $wd = $pwd.path -replace "\\", "/"
-    mkdir build
-    cd build
-    cmake -G "Visual Studio 15 2017" `
-      -DCMAKE_TOOLCHAIN_FILE="$wd/vcpkg-6/scripts/buildsystems/vcpkg.cmake" `
-      -DVCPKG_TARGET_TRIPLET=x86-windows-mixed `
-      -DCMAKE_INSTALL_PREFIX=%P%\install `
-      ..
+  - ps: $wd = $pwd.path -replace "\\", "/"; mkdir build; cd build; cmake -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE="$wd/vcpkg-6/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x86-windows-mixed -DCMAKE_INSTALL_PREFIX=%P%\install ..
 
 build:
   parallel: true
