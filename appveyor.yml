@@ -18,7 +18,7 @@ shallow_clone: true
 cache:
   - vcpkg-6
 
-platform: x86
+#platform: x86
 configuration: Release
 
 before_build:
