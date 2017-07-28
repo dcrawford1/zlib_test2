@@ -11,14 +11,11 @@ image: Visual Studio 2017
 init:
   - git config --global core.autocrlf input
 
-#clone_folder: c:\projects\maxconnect
-
 shallow_clone: true
 
 cache:
   - vcpkg-6
 
-#platform: x86
 configuration: Release
 
 before_build:
@@ -30,6 +27,4 @@ before_build:
 build:
   parallel: true
   project: build\sample.sln
-  
-after_build:
-  - ps: ls build
+
