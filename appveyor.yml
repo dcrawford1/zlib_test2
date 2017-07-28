@@ -34,4 +34,4 @@ build_script:
 test: off
 
 artifacts:
-  - path: build\$(configuration)\minigzip.exe
+  - path: build\minigzip\$(configuration)\minigzip.exe
